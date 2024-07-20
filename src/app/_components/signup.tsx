@@ -14,7 +14,16 @@ export function Register() {
   const [formData, setFormData] = useState(initialState);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-
+  interface clientError {
+    validation?: string;
+    code: string;
+    message: string;
+    path?: string[];
+    minimum?: number;
+    type?: string;
+    inclusive?: boolean;
+    exact?: boolean;
+  }
   const createUser = api.user.create.useMutation({
     onSuccess: async () => {
       setFormData(initialState);
@@ -24,23 +33,34 @@ export function Register() {
       
       router.push('/verify');
     },
-    onError: async (error) => {
-      setError(error.message);
+    onError: async (error ) => {
+      //const errorStr = error.toString();
+      console.log("signup error", error);
+      if(error.message.includes("Invalid email")){
+        setError("Invalid email");
+      } else {
+        if(error.message.includes("6")) {
+          setError("Password must contain at least 6 character(s)");
+        }
+      }
+      //console.log("typeof error", typeof errorStr);
+      
+      
     },
     
   });
 
   return (
     <div className="w-full max-w-xs text-black">
-      {error && <p>{error}</p>}
       <div className="w-100 text-center mt-2">
         <p className="font-bold">Create your account</p>
+        {error && <p className="text-red-500" >{error}</p>}
       </div>
       <form onSubmit={(e) => {
           e.preventDefault();
           createUser.mutate({ ...formData });
         }}
-        className="flex flex-col gap-2 mt-4">
+        className="flex flex-col gap-1 mt-2">
         <label htmlFor="name">Name</label>
           <input
           type="text"

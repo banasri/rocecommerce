@@ -46,9 +46,10 @@ export function Login() {
   return (
     
     <div className="w-full max-w-xs text-black">
-      {error && <p>{error}</p>}
+      
       <div className="w-100 text-center mt-2">
         <p className="font-bold">Login</p>
+        {error && <p className="text-red-500">{error}</p>}
         <p>Welcome back to ECOMMERCE</p>
         <p className="text-xs">The next gen business marketplace</p>
       </div>

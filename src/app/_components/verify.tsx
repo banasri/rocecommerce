@@ -68,7 +68,7 @@ const VerifyPage = () => {
       <p className="text-gray-600 text-center mb-8">
       Enter the 8 digit code you have received on {obsEmail}
       </p>
-    {error && <p>{error}</p>}
+    {error && <p className="text-red-500" >{error}</p>}
       <div className="flex justify-center">
         <form onSubmit={(e) => {
           e.preventDefault();
