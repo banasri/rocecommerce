@@ -82,14 +82,16 @@ const VerifyPage = () => {
             onChange={(e) => {
 		console.log("in onChange digigt1");
             if (`${e.target.value.length}` === e.target.getAttribute("maxlength")) {
-              const inputs = document.getElementsByClassName("autotab");
+              const inputs  = document.querySelectorAll<HTMLInputElement>(".autotab");
         
               for (let i = 0; i < inputs.length; i++) {
                 if (e.target == inputs[i]) {
                   i++;
                   if (i < inputs.length) {
-                    const next: any = inputs[i];
-                    next.focus();
+                    const next = inputs[i];
+                    if(next) {
+                      next.focus();
+                    }
                   }
                 }
               }

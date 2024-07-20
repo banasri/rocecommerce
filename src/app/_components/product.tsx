@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 
 import { api } from "@/trpc/react";
 import Pagination from "./pagination";
-import { Product } from '@prisma/client';
+import type { Product } from '@prisma/client';
 
 export function ProductCategory() {
   const [error, setError] = useState<string | null>(null);
@@ -36,7 +36,7 @@ export function ProductCategory() {
       const productIds = res.products.map(obj => obj.productId);
       setUserProducts(productIds);
     },
-    onError: async (error) => {
+    onError: async () => {
       router.push('/login');
     },
   })
@@ -135,7 +135,7 @@ export function ProductCategory() {
         className="flex flex-col gap-2 mt-4">
           { 
             products.map((item) => {
-              return <div><input type="checkbox" key={item.id} id={item.name} name={item.name} value={item.name} onChange={(e) => handleCheckboxChange({ productId :item.id, checked :e.target.checked})} checked={checkItemSelected(item.id)} className={checkItemSelected(item.id)? "w-4 h-4 bg-gray-500" : "w-4 h-4 bg-black text-white"}>
+              return <div key={item.id}><input type="checkbox" key={item.id} id={item.name} name={item.name} value={item.name} onChange={(e) => handleCheckboxChange({ productId :item.id, checked :e.target.checked})} checked={checkItemSelected(item.id)} className={checkItemSelected(item.id)? "w-4 h-4 bg-gray-500" : "w-4 h-4 bg-black text-white"}>
               </input>
               <label key={item.id} htmlFor={item.name}> {item.name}</label><br></br></div>
             })

@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
-import { Product } from '@prisma/client';
+import type { Product } from '@prisma/client';
 
 
 interface GetAllProductsInput {

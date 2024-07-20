@@ -1,12 +1,10 @@
 
 import { api, HydrateClient } from "@/trpc/server";
-import VerifyPage from "@/app/_components/verify";
 import { ProductCategory } from "../_components/product";
 
 
 async function Product() {
   
-  const products = await api.product.getAll({ skip : 0, take : 6});
  
   return (
     <HydrateClient>
