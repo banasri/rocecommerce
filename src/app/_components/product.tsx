@@ -5,11 +5,12 @@ import { useRouter } from "next/navigation";
 
 import { api } from "@/trpc/react";
 import Pagination from "./pagination";
+import { Product } from '@prisma/client';
 
 export function ProductCategory() {
   const [error, setError] = useState<string | null>(null);
-  const [ products, setProducts ] = useState([]);
-  const [ userProducts, setUserProducts ] = useState([]);
+  const [ products, setProducts ] = useState<Product[]>([]);
+  const [ userProducts, setUserProducts ] = useState<number[]>([]);
   const [count, setCount] = useState(0);
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
@@ -79,8 +80,10 @@ export function ProductCategory() {
       const oldEmail = localStorage.getItem('verificationProp');
       if(!oldEmail) {
         router.push('/login');
+      } else {
+        getUser.mutate({ email : oldEmail});
       }
-      getUser.mutate({ email : oldEmail})
+      
   }, []);
 
   useEffect(() => {
@@ -92,14 +95,19 @@ export function ProductCategory() {
   }, [userProducts]);
  
 
-  const handlePageChange = (page) => { 
+  const handlePageChange = (page : number) => { 
     setCurrentPage(page);
   };
 
-  const checkItemSelected = (productId) => {
+  const checkItemSelected = (productId :number) => {
     return userProducts.includes(productId);
   }
-  const handleCheckboxChange =(productId, checked) => {
+  type HandleCheckboxChangeParams = {
+    productId: number;
+    checked: boolean;
+  };
+  
+  const handleCheckboxChange =({ productId, checked }: HandleCheckboxChangeParams) => {
     setUserProducts(prevProducts => {
       const updatedProducts = prevProducts.includes(productId)
         ? prevProducts.filter(id => id !== productId)
@@ -130,9 +138,9 @@ export function ProductCategory() {
         className="flex flex-col gap-2 mt-4">
           { 
             products.map((item, index) => {
-              return <div><input type="checkbox" key={item.id} id={item.id} name={item.name} value={item.name} onChange={(e) => handleCheckboxChange(item.id, e.target.checked)} checked={checkItemSelected(item.id)} className={checkItemSelected(item.id)? "w-4 h-4 bg-gray-500" : "w-4 h-4 bg-black text-white"}>
+              return <div><input type="checkbox" key={item.id} id={item.name} name={item.name} value={item.name} onChange={(e) => handleCheckboxChange({ productId :item.id, checked :e.target.checked})} checked={checkItemSelected(item.id)} className={checkItemSelected(item.id)? "w-4 h-4 bg-gray-500" : "w-4 h-4 bg-black text-white"}>
               </input>
-              <label htmlFor={item.id}> {item.name}</label><br></br></div>
+              <label htmlFor={item.name}> {item.name}</label><br></br></div>
             })
  
           }

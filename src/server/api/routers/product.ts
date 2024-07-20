@@ -1,34 +1,21 @@
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import { Product } from '@prisma/client';
 
+
+interface GetAllProductsInput {
+  skip?: number;
+  take?: number;
+}
+interface Context {
+  db: {
+    product: {
+      findMany: (query: { skip?: number; take?: number }) => Promise<Product[]>;
+    };
+  };
+}
 export const productRouter = createTRPCRouter({
-  hello: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
-      return {
-        greeting: `Hello From Products ${input.text}`,
-      };
-    }),
-
-  create: publicProcedure
-    .input(z.object({ name: z.string().min(1), short_name: z.string().min(1), description : z.string().min(1), price : z.number().gt(0) }))
-    .mutation(async ({ ctx, input }) => {
-      // simulate a slow db call
-      //await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      return ctx.db.post.create({
-        data: {
-          name: input.name,
-        },
-      });
-    }),
-
-  getLatest: publicProcedure.query(({ ctx }) => {
-    return ctx.db.post.findFirst({
-      orderBy: { createdAt: "desc" },
-    });
-  }),
 
   getAll: publicProcedure
   .input(z.object(
@@ -36,7 +23,7 @@ export const productRouter = createTRPCRouter({
     skip: z.number().optional(),
     take: z.number().optional()
     }
-  )).mutation(async ({ ctx, input }) => {
+  )).mutation(async ({ ctx, input } : { ctx: Context, input: GetAllProductsInput }) : Promise<Product[]> => {
     // simulate a slow db call
     //await new Promise((resolve) => setTimeout(resolve, 1000));
 
