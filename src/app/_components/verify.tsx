@@ -5,22 +5,21 @@ import { useRouter } from 'next/navigation';
 import { api } from "@/trpc/react";
 
 const VerifyPage = () => {
-  const [email, setEmail] = useState("");
   const [verificationCode, setVerificationCode] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState(["", "", "", "", "", "", "", "" ]);
   const router = useRouter();
 
-  let emailLS: string = localStorage?.getItem('verificationProp') || '';
+  const emailLS: string = localStorage?.getItem('verificationProp')??'';
   console.log("email from ls", emailLS);
   
-  let emailLSParts = emailLS?.split('@');
+  const emailLSParts = emailLS?.split('@');
   console.log('emailLSParts', emailLSParts);
   // let propEmail: string = localStorage.getItem('verificationProp') || "default@domain.com"; 
   
   // const emailParts: string[] | null = propEmail.split('@'); 
 
-  let obsEmail: string = "";
+  let obsEmail = "";
   obsEmail = emailLSParts?.[0]?.slice(0, 3) + "***@" + emailLSParts?.[1] || ""; 
   
   const verifyEmail = api.user.verifyEmail.useMutation({
@@ -40,14 +39,14 @@ const VerifyPage = () => {
     console.log("In handleInputChange verify");
     console.log("value", value);
     console.log("formData before setF", formData);
-    let verificationStr = "";
+  
     setFormData((prevData) => {
-      let newFormData = [...prevData.slice(0, index), value, ...prevData.slice(index + 1)];
-      let verificationStr = newFormData.join('');
-    console.log("verificationStr", verificationStr);
-    setVerificationCode(verificationStr);
+      const newFormData = [...prevData.slice(0, index), value, ...prevData.slice(index + 1)];
+      const verificationStr = newFormData.join('');
+      console.log("verificationStr", verificationStr);
+      setVerificationCode(verificationStr);
       return newFormData});
-    console.log("verificationStr", verificationStr);
+      
    
   };
   
@@ -83,13 +82,13 @@ const VerifyPage = () => {
             onChange={(e) => {
 		console.log("in onChange digigt1");
             if (`${e.target.value.length}` === e.target.getAttribute("maxlength")) {
-              var inputs = document.getElementsByClassName("autotab");
+              const inputs = document.getElementsByClassName("autotab");
         
               for (let i = 0; i < inputs.length; i++) {
                 if (e.target == inputs[i]) {
                   i++;
                   if (i < inputs.length) {
-                    let next: any = inputs[i];
+                    const next: any = inputs[i];
                     next.focus();
                   }
                 }

@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
@@ -11,13 +10,11 @@ export function ProductCategory() {
   const [error, setError] = useState<string | null>(null);
   const [ products, setProducts ] = useState<Product[]>([]);
   const [ userProducts, setUserProducts ] = useState<number[]>([]);
-  const [count, setCount] = useState(0);
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const [ totalPages, setTotalPages] = useState(0);
   const [ userId, setUserId] = useState(0);
-  let itemPerPage = 6;
-  const utils = api.useUtils();
+  const itemPerPage = 6;
   
   const getProductsAll = api.product.getAll.useMutation({
     onSuccess: async (res) => {
@@ -137,10 +134,10 @@ export function ProductCategory() {
         }}
         className="flex flex-col gap-2 mt-4">
           { 
-            products.map((item, index) => {
+            products.map((item) => {
               return <div><input type="checkbox" key={item.id} id={item.name} name={item.name} value={item.name} onChange={(e) => handleCheckboxChange({ productId :item.id, checked :e.target.checked})} checked={checkItemSelected(item.id)} className={checkItemSelected(item.id)? "w-4 h-4 bg-gray-500" : "w-4 h-4 bg-black text-white"}>
               </input>
-              <label htmlFor={item.name}> {item.name}</label><br></br></div>
+              <label key={item.id} htmlFor={item.name}> {item.name}</label><br></br></div>
             })
  
           }

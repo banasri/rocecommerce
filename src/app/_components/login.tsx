@@ -14,7 +14,6 @@ export function Login() {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
-  const utils = api.useUtils();
   const login = api.user.login.useMutation({
     onSuccess: async (res) => {
       setFormData(initialState);
@@ -84,7 +83,7 @@ export function Login() {
         </button>
         <hr className="border-gray mt-2" />
         <div className="w-100 text-center mt-2 text-xs">
-        Don't have an account? <Link href="/">SIGN UP</Link>
+        Don&apos;t have an account? <Link href="/">SIGN UP</Link>
       </div>
             
           </form>

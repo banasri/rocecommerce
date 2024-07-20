@@ -15,9 +15,8 @@ export function Register() {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
-  const utils = api.useUtils();
   const createUser = api.user.create.useMutation({
-    onSuccess: async (res) => {
+    onSuccess: async () => {
       setFormData(initialState);
       localStorage.setItem('verificationProp', formData.email);
       router.push('/verify');
