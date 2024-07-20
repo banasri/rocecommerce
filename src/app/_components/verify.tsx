@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { api } from "@/trpc/react";
 
@@ -9,24 +9,31 @@ const VerifyPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState(["", "", "", "", "", "", "", "" ]);
   const router = useRouter();
+  const [emailLS, setEmailLS] = useState<string>('');
+  const [obsEmail, setObsEmail] = useState<string>('');
 
-  const emailLS: string = localStorage?.getItem('verificationProp')??'';
-  console.log("email from ls", emailLS);
-  
-  const emailLSParts = emailLS?.split('@');
-  console.log('emailLSParts', emailLSParts);
-  // let propEmail: string = localStorage.getItem('verificationProp') || "default@domain.com"; 
-  
-  // const emailParts: string[] | null = propEmail.split('@'); 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // Check if window is available
+      const storedEmail = localStorage.getItem('verificationProp') ?? '';
+      setEmailLS(storedEmail);
+      const emailLSParts = storedEmail?.split('@');
+       console.log('emailLSParts', emailLSParts);
 
-  let obsEmail = "";
-  obsEmail = emailLSParts?.[0]?.slice(0, 3) + "***@" + emailLSParts?.[1] || ""; 
+      let tempEmail = "";
+      tempEmail = emailLSParts?.[0]?.slice(0, 3) + "***@" + emailLSParts?.[1] || ""; 
+      setObsEmail(tempEmail);
+    }
+  }, []);
+
+  
   
   const verifyEmail = api.user.verifyEmail.useMutation({
     onSuccess: async () => {
       setError(null);
-      // Redirect to the login page
-      localStorage.removeItem('verificationProp'); // Clear storage
+      if (typeof window !== 'undefined'){
+        localStorage.removeItem('verificationProp');
+      }
       router.push('/login');
     },
     onError: async (error) => {

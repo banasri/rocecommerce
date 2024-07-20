@@ -74,11 +74,13 @@ export function ProductCategory() {
 
   useEffect(() => {
       getProductsAll.mutate({ });
-      const oldEmail = localStorage.getItem('verificationProp');
-      if(!oldEmail) {
-        router.push('/login');
-      } else {
-        getUser.mutate({ email : oldEmail});
+      if (typeof window !== 'undefined') {
+        const oldEmail = localStorage.getItem('verificationProp');
+        if(!oldEmail) {
+          router.push('/login');
+        } else {
+          getUser.mutate({ email : oldEmail});
+        }
       }
       
   }, []);

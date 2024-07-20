@@ -18,7 +18,10 @@ export function Login() {
     onSuccess: async (res) => {
       setFormData(initialState);
       console.log("message", res);
-      localStorage.setItem('verificationProp', formData.email);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('verificationProp', formData.email);
+      }
+      
       router.push('/product');
     },
     onError: async (error) => {
@@ -30,7 +33,9 @@ export function Login() {
           router.push('/');
         } else if(error.message === 'User not verified'){
           console.log('formData.email', formData.email);
-          localStorage.setItem('verificationProp', formData.email);
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('verificationProp', formData.email);
+          }
           router.push('/verify');
         }
       })

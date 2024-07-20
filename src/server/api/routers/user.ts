@@ -109,20 +109,6 @@ const passwordHash = crypto.createHash('sha256').update(input.password).digest('
     
     return user;
   }),
-  // .query(async ({ctx}) =>{
-  //   const token = localStorage.getItem("token");
-  //     if (!token) {
-  //       return null;
-  //     }
-  //     try {
-  //       const decoded = verifyToken(token) as { id: number };
-  //       const user = await ctx.db.user.findUnique({ where: { id: decoded.id } });
-
-  //       return user;
-  //     } catch {
-  //       return null;
-  //     }
-  // })
 })
  
   
