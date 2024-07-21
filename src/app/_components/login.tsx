@@ -16,7 +16,7 @@ export function Login() {
 
   const login = api.user.login.useMutation({
     onSuccess: async (res) => {
-      setFormData(initialState);
+      //setFormData(initialState);
       console.log("message", res);
       if (typeof window !== 'undefined') {
         localStorage.setItem('verificationProp', formData.email);

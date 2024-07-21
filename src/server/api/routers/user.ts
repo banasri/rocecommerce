@@ -8,12 +8,12 @@ import crypto from 'crypto';
 export const userRouter = createTRPCRouter({
   create : publicProcedure
   .input(z.object({
-    username: z.string(),
+    username: z.string().min(1),
     email: z.string().email(),
     password: z.string().min(6),
   }))
   .mutation(async ({ ctx, input }) => {
-const passwordHash = crypto.createHash('sha256').update(input.password).digest('hex');
+    const passwordHash = crypto.createHash('sha256').update(input.password).digest('hex');
 
     // Generate an 8-digit verification code
     const verificationCode = Math.floor(10000000 + Math.random() * 90000000).toString();

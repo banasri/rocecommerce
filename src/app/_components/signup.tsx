@@ -26,7 +26,6 @@ export function Register() {
   }
   const createUser = api.user.create.useMutation({
     onSuccess: async () => {
-      setFormData(initialState);
       if (typeof window !== 'undefined') {
         localStorage.setItem('verificationProp', formData.email);
       }
@@ -36,15 +35,14 @@ export function Register() {
     onError: async (error ) => {
       //const errorStr = error.toString();
       console.log("signup error", error);
-      if(error.message.includes("Invalid email")){
-        setError("Invalid email");
-      } else {
-        if(error.message.includes("6")) {
-          setError("Password must contain at least 6 character(s)");
-        }
-      }
+      if(error.message.includes("1")){
+        setError("Please enter username");
+      } else if (error.message.includes("Invalid email")){
+        setError("Please provide a valid email");
       //console.log("typeof error", typeof errorStr);
-      
+      } else if(error.message.includes("6")) {
+        setError("Password must contain at least 6 character(s)");
+      } 
       
     },
     

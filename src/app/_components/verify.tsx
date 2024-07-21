@@ -65,8 +65,8 @@ const VerifyPage = () => {
       <div className="container mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold text-center mb-4">Verify Your Email</h1>
 
-      <p className="text-gray-600 text-center mb-8">
-      Enter the 8 digit code you have received on {obsEmail}
+      <p className="text-gray-600 text-center mb-8 text-sm  ">
+      Enter the 8 digit code you have received on <span className="font-bold">{obsEmail}</span>
       </p>
     {error && <p className="text-red-500" >{error}</p>}
       <div className="flex justify-center">
@@ -77,14 +77,14 @@ const VerifyPage = () => {
         }}
           >
             <label>Code</label>
-            <div className="grid grid-cols-8 gap-4" >
+            <div className="grid grid-cols-8 gap-2" >
           {formData.map((item, index) => (
           <input
             key={index} // Add a unique key for each input
             type="text"
             maxLength={1}
 	    value={item}
-            className="autotab w-full rounded-sm px-1 py-2 border-2 border-black-500 text-black"
+            className="autotab w-full rounded-sm px-1 py-1 border-2 border-black-500 text-black"
             
             onChange={(e) => {
 		console.log("in onChange digigt1");
